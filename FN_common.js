@@ -108,6 +108,7 @@ var FN_Log = function(logLevel)
 	};
 
 	this.logLevel = logLevel || 0;
+	this.logOnly = null;
 	this.EXPORT_LOG = true;
 	var LOG_TRACE = 50;
 	var LOG_LOG = 40;
@@ -135,16 +136,16 @@ var FN_Log = function(logLevel)
 
 	this.traceLoggerPlus = function(val)
 	{
-	    if (self.logLevel >= LOG_TRACE)
+	    if((!self.logOnly && self.logLevel >= LOG_TRACE) || (self.logOnly && self.logOnly === LOG_TRACE))
 	    {
 	        console.trace(val);
 	        checkLogDiv(val, "trace");
-	    }
+	    } 
 	};
 
 	this.logLoggerPlus = function(val)
 	{
-	    if (self.logLevel >= LOG_LOG)
+	    if((!self.logOnly && self.logLevel >= LOG_LOG) || (self.logOnly && self.logOnly === LOG_LOG))
 	    {
 	        console.log(val);
 	        checkLogDiv(val, "log");
@@ -154,7 +155,7 @@ var FN_Log = function(logLevel)
 
 	this.infoLoggerPlus = function(val)
 	{
-	    if (self.logLevel >= LOG_INFO)
+	    if((!self.logOnly && self.logLevel >= LOG_INFO) || (self.logOnly && self.logOnly === LOG_INFO))
 	    {
 	        console.info(val);
 	        checkLogDiv(val, "info");
@@ -163,7 +164,7 @@ var FN_Log = function(logLevel)
 
 	this.warnLoggerPlus = function(val)
 	{
-	    if(self.logLevel >= LOG_WARN)
+	    if((!self.logOnly && self.logLevel >= LOG_WARN) || (self.logOnly && self.logOnly === LOG_WARN))
 	    {
 	        console.warn(val);
 	        checkLogDiv(val, "warn");
@@ -176,7 +177,7 @@ var FN_Log = function(logLevel)
 
 	this.errorLoggerPlus = function(val)
 	{
-	    if(self.logLevel >= LOG_ERROR)
+	    if((!self.logOnly && self.logLevel >= LOG_ERROR) || (self.logOnly && self.logOnly === LOG_ERROR))
 	    {
 	        console.error(val);
 	        checkLogDiv(val, "error");
