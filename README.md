@@ -36,6 +36,8 @@ require(moduleName String) // in doubble quotes
 
 		var myModule = require("myPathToModule/myModuleName");
 
+
+
 require(moduleNamesArray Array, doneCallback function, failCallback function)
 	- Returns an object with ModuleNames as the keys. It will NOT preload the module.
 
@@ -54,6 +56,8 @@ require(moduleNamesArray Array, doneCallback function, failCallback function)
 			log.warn("Modules Failed to load: {}", errorObj);
 		});
 
+
+
 define(moduleName String, data String Object or Array)
 	- defines module to be used later
 
@@ -64,6 +68,8 @@ define(moduleName String, data String Object or Array)
 	Example:
 	
 		define("stuff", {foo:"bar"});
+
+
 
 requireLocal(moduleName String)
 	- returns module or null, use if you want exeplitcitly what is currently in memory
@@ -76,6 +82,8 @@ requireLocal(moduleName String)
 
 		var stuff = requireLocal("stuff");
 
+
+
 ModRewrite.baseUrl String
 	- if set, it will prefix any non fully qulified URL
 
@@ -83,8 +91,11 @@ ModRewrite.baseUrl String
 
 		ModRewrite.baseUrl = "modules";
 
+
+
 ModRewrite.addExtensionRule(extension String)
 	- adds extension to possible extensions
+
 		@method ModRewrite.addExtensionRule
 		@param  String
 		@return null
@@ -93,8 +104,11 @@ ModRewrite.addExtensionRule(extension String)
 
 		ModRewrite.addExtensionRule("json");
 
+
+
 ModRewrite.addFileRule(rule String or RegEx, ModifyPath Function)
 	- adds filerule
+
 		@method ModRewrite.addFileRule
 		@param  String or RegEx, Function
 		@return null
@@ -106,8 +120,11 @@ ModRewrite.addFileRule(rule String or RegEx, ModifyPath Function)
 			return "libs/jquery.2.0";
 		});
 
+
+
 ModRewrite.setExports(moduleId, exportName)
 	- adds Export Rule
+
 		@method ModRewrite.setExports
 		@param  String, String
 		@return null
@@ -116,8 +133,10 @@ ModRewrite.setExports(moduleId, exportName)
 		ModRewrite.setExports("jquery", "jquery");
 
 
+
 Deferred
 	- Returns Deferred Object
+
 		@method Deferred
 		@param  null
 		@return Deferred
@@ -174,8 +193,10 @@ Deferred
 		}, 1000);
 
 
+
 Ajax
 	- Returns Ajax Object
+
 		@method Ajax
 		@param  Object
 		@return Ajax Deferred
@@ -193,22 +214,37 @@ Ajax
 
 log
 	log.logLevel
+
 		- int to set maximum logging
+
 	log.logOnly
+
 		- int to set log to only one type of log
+
 	log.trace(log String, Obj object)
+
 		- sends trace to console
+
 	log.log(log String, Obj object)
+
 		- sends log to console
+
 	log.info(log String, Obj object)
+
 		- sends info to console
+
 	log.warn(log String, Obj object)
+
 		- sends warn to console
+
 	log.error(log String, Obj object)
+
 		- sends error to console
 
 
-Examples
+
+Code Examples 
+
 - You may want to start with the log example to help debugging
 - The commonJS example will show you the methods of the CommonJS Library
 - The deferred example will show how you can use the deferred objects
