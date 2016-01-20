@@ -213,6 +213,7 @@ Ajax
 		});
 
 log
+
 	log.logLevel
 
 		- int to set maximum logging
