@@ -3,7 +3,6 @@ var TestModule = function()
 {
 	log.info("TestModule");
 	var self = this;
-	debugger;
 	var TestModule4 = require("modules/com/component/TestModule4");
 	var testModule4 = new TestModule4();
 	testModule4.myPublicFunction(true);

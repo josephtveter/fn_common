@@ -22,9 +22,8 @@ Here is an example:
 
 <script type="text/javascript" data-main="modules/bootstrap" src="modules/libs/FN_Common.js"></script>
 
+
 API
-
-
 		 
 require(moduleName String) // in doubble quotes
 	- Returns an object by the moduleName that is passed in.  When doubble quotes are used it will attempt to preload the file so it can return the file upon execution.  
@@ -56,7 +55,7 @@ define(moduleName String, data String Object or Array)
 		@return Object or String
 
 requireLocal(moduleName String)
-	- returns module or null
+	- returns module or null, use if you want exeplitcitly what is currently in memory
 
 		@method requireLocal
 		@param  String
