@@ -1,0 +1,194 @@
+{
+	"app":
+	{
+		"yes": "YES",
+		"no": "NO",
+		"close": "Close",
+		"OK": "OK",
+		"title": "Flashvote",
+		"description": "Question Everything",
+		"next": "NEXT",
+		"submit": "Submit",
+		"reset": "Reset",
+		"apply": "Apply",
+		"cancel": "Cancel",
+		"open": "Open"
+	},
+	"error":
+	{
+		"anonymousUserUnableToAnswerPrivateVote": "You must get the app to answer a private Flash Vote.",
+		"voteError": "Your Vote was unable to be submitted at this time.",
+		"general": "Flashvote is currently down, please try again shortly.",
+		"voteTO": "There may have been an issue with your Vote, Please try again.",
+		"serverMaintenance": "Flashvote is performing server maintenance, please try again shortly."
+	},
+	"wait":
+	{
+		"retrieving": "Retrieving your Flash Vote",
+		"recording": "Recording your vote.",
+		"recorded": "Vote recorded.",
+		"loading": "Loading..."
+	},
+	"MyFeedScreen":
+	{
+		"INBOX": "DIRECT",
+		"POPULAR": "POPULAR",
+		"RESULTS": "RESULTS",
+		"ShowAllComments": "Show All comments"
+	},
+	"VoteScreen":
+	{
+		"wantsToKnow" :" wants to know...",
+		"helpQuestion": "Tap on a row to select an answer.",
+		"helpImage": "Tap on an image to enlarge.",
+		"vote": "VOTE",
+		"Re-Vote": "RE-VOTE",
+		"votes": "votes",
+		"wrongId": "It appears that this flashvote no longer exists."
+	},
+	"GetAppScreen":
+	{
+		"followCreate": "Create your own Flashvote, add Comments & get instant reactions from friends!",
+		"downloadNow": "Download Now!",
+		"sendLink": "Send Link to Phone"
+	},
+	"VoteResultsScreen":
+	{
+		"noResults": "No Results",
+		"title": "Question Results",
+		"filter_age": "Age",
+		"export": "Export Results",
+		"advanced": "Saved Profiles",
+		"private": "Private Results"
+	},
+	"ShareScreen":
+	{
+		"title": "SHARE",
+		"text": "Text",
+		"email": "Email"
+	},
+	"CommentsScreen":
+	{
+		"title": "Comments",
+		"noComments": "No Comments",
+		"add": "Add a Comment"
+	},
+	"ProfileScreen":
+	{
+		"title": "Profile",
+		"Followers": "Followers",
+		"Following": "Following",
+		"FlashVotes": "FlashVotes",
+		"followButton": "+ Follow",
+		"partnerApps": "Partner Apps",
+		"lastWeek": "Last 7 days",
+		"lastMonth": "Last Month"
+	},
+	"PartnerAppsScreen":
+	{
+		"title": "Get The App",
+		"shout": "Get Shout",
+		"real": "Get the Real Madrid App"
+	},
+	"CloneScreen":
+	{
+		"title": "Clone Vote",
+		"clone": "Clone"
+	},
+	"ClosedScreen":
+	{
+		"title": "Closed Votes"
+	},
+	"LiveScreen":
+	{
+		"title": "Live Votes"
+	},
+	"LoginScreen":
+	{
+		"login": "LOGIN",
+		"signup": "SIGN UP"
+	},
+	"MainMenuScreen":
+	{
+		"myFeed": "My Feed",
+		"create": "Create Vote",
+		"clone": "Clone Vote",
+		"animation": "Animation Test"
+	},
+	"PhotoAndFilmScreen":
+	{
+		"mediaType": "Media Type",
+		"choose": "Please choose the media Type",
+		"image": "Image",
+		"youTube": "You Tube"
+	},
+	"QuestionImageScreen":
+	{
+		"title": "QUESTION IMAGE",
+		"skip": "SKIP",
+		"up": "Up",
+		"down": "Down",
+		"left": "Left",
+		"right": "Right",
+		"zoomHeightIn": "Zoom Height In",
+		"zoomHeightOut": "Zoom Height Out",
+		"zoomWidthOut": "Zoom Width Out",
+		"zoomWidthIn": "Zoom Width In",
+		"cropHeightUp": "Crop Height Up",
+		"cropHeightDown": "Crop Height Down",
+		"cropWidthLeft": "Crop Width Left",
+		"cropWidthRight": "Crop Width Right"
+	},
+	"SignInScreen":
+	{
+		"phoneNumber": "Phone Number: +1"
+	},
+	"SignUpScreen":
+	{
+		"email": "Email: ",
+		"username": "Username: ",
+		"mobilePhone": "Mobile Phone: ",
+		"password": "Password: "
+	},
+	"VerifyCodeScreen":
+	{
+		"verify": "Verify SMS Login Code",
+		"enter": "Enter your SMS Login Code"
+	},
+	"VoteMenuSCreen":
+	{
+		"sponsor": "Vote Sponsor",
+		"comments": "Vote Comments",
+		"get": "Get the App"
+	},
+	"YouTubeInputScreen":
+	{
+		"title": "You Tube Url Input",
+		"enter": "Enter a You Tube url."
+	},
+	"FilterScreen":
+	{
+		"title": "Filter Results",
+		"age": "Age",
+		"gender": "Gender",
+		"location": "Location",
+		"income": "Income",
+		"votes": "Votes",
+		"more": "More",
+		"less": "Less",
+		"filterAge": "Filter Age",
+		"filterGender": "Filter Gender",
+		"filterLocation": "Filter Location",
+		"maxAge": "Max Age",
+		"minAge": "Min Age",
+		"male": "Male",
+		"female": "Female",
+		"add": "Add",
+		"votes": "App",
+		"web": "Web",
+		"undeclared": "Unspecified",
+		"education": "Education",
+		"ethnicity": "Ethnicity",
+		"language": "Language"
+	}
+}

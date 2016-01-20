@@ -1,0 +1,27 @@
+{
+	"app":
+	{
+		"yes": "JA",
+		"no": "NEIN",
+		"close": "Schließen"
+	},
+	"MyFeedScreen":
+	{
+		"INBOX": "EINGANG",
+		"POPULAR": "POPULAR",
+		"RESULTS": "ERGEBNISSE",
+		"ShowAllComments": "Alle Kommentare anzeigen"
+	},
+	"VoteScreen":
+	{
+		"wantsToKnow" :" will wissen...",
+		"helpQuestion": "Tippen Sie auf eine Zeile, um eine Antwort auszuwählen.",
+		"helpImage": "Tippen Sie auf ein Bild, um es zu vergrößern.",
+		"vote": "Wählen",
+		"Re-Vote": "Re-Abstimmung"
+	},
+	"VoteResultsScreen":
+	{
+		"noResults": "Keine Ergebnisse"
+	}
+}
