@@ -6,9 +6,9 @@ var screens = function()
 
     var screenNames = new ScreenNames();
     var screenList = {};
-    screenList[screenNames.TEST2_SCREEN] = screenLoaderFactory(
+    screenList[screenNames.TEST2_SCREEN_ID] = screenLoaderFactory(
     {
-        moduleName: screenNames.TEST2_SCREEN,
+        moduleName: screenNames.TEST2_SCREEN_ID,
         css: true
     });
     screenList[screenNames.TEST_SCREEN_ID] = screenLoaderFactory(

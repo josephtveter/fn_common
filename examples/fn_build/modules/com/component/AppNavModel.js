@@ -84,6 +84,7 @@ var AppNavModel = function(dataModel)
         }
         else
         {
+            debugger;
         	log.warn("AppNavModel.loadView NO_SCREEN_OBJ: "+params.screenId);
             deferred.reject({errorType: "NO_SCREEN_OBJ"});
         }
@@ -230,3 +231,4 @@ var AppNavModel = function(dataModel)
     };
 };
 module.exports = AppNavModel;
+//# sourceURL=/modules/com/component/AppNavModel.js
