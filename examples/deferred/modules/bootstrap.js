@@ -3,38 +3,32 @@
 *
 * This library is baesed off of Promise/A  - https://promisesaplus.com/ and made to closely resemble Jquery Deferred for easy replacement of Jquery Deferred - https://api.jquery.com/jquery.deferred/
 */
-debugger;
 var Deferred = require("Deferred"); // Require the library with commonJS Require statement
 
-var deferred = new Deferred; // instanciate the object
+var deferred = new Deferred; // instantiate the object
 
 var successFun = function(result) // Success Function
 {
 	log.info("Success Function: {}", result);
-	debugger;
 };
 
 var failureFun = function(errorObj) // Failure Function
 {
 	log.warn("Failure Function: {}", errorObj);
-	debugger;
 };
 
 var doneFun = function(result) // Done Function
 {
 	log.info("Done Function: {}", result);
-	debugger;
 };
 
 var failFun = function(errorObj) // Fail Function
 {
 	log.warn("Fail Function: {}", errorObj);
-	debugger;
 };
 
 var alwaysFun = function(result) // Always Function
 {
-	debugger;
 	log.log("Always Function: {}", result);
 	var status = deferred.status();
 	log.log("Always Function status: {}", status);
@@ -46,9 +40,7 @@ var alwaysFun = function(result) // Always Function
 	log.log("Always Function state: {}", state);
 	var value = deferred.value;
 	log.log("Always Function value: {}", value);
-	debugger;
 };
-debugger;
 
 // deferred.then(successFun, failureFun); // Promise/A then method accepts functions
 // deferred.done(doneFun); // Jquery like done method accepts functions
@@ -79,5 +71,7 @@ myFunction().done(function(result)
 {
 	log.log("myFunction resolved: {}", result);
 });
+
+
 
 

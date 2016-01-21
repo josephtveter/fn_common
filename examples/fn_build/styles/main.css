@@ -40,7 +40,7 @@ body.desktop .shout-view
 }
 .shout-dialog
 {
-    width: 30rem;
+    width: 100%;
     margin-left: 50%;
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
@@ -211,6 +211,7 @@ header
     height: 4.5rem;
     position: relative;
     z-index: 2;
+    font-size: 1.5rem;
 }
 
 footer
@@ -218,6 +219,7 @@ footer
     height: 5rem;
     position: relative;
     z-index: 2;
+    font-size: 1.25rem;
 }
 
 .noFlex footer
@@ -253,8 +255,9 @@ footer
   -webkit-flex-grow: 1;
   -moz-flex-grow: 1;
   -ms-flex-grow: 1;
-    flex-grow: 1;
-    position: relative;
+  flex-grow: 1;
+  position: relative;
+  font-size: 1rem;
 }
 
 .leftItem 

@@ -1,11 +1,13 @@
-var windowSize = function()
+var windowSize = function(ratioLandscape, ratioPortrait)
 {
+    ratioLandscape = ratioLandscape || 35; // DEFAULT BUILD RATIO
+    ratioPortrait = ratioPortrait || 35;
     log.log("windowSize");
+    var ratio = ratioLandscape;
     var FBAV = navigator.userAgent.toLowerCase().indexOf("fbav") !== -1 && navigator.userAgent.toLowerCase().indexOf("android") !== -1 ? true : false; // Facebook Android
     var screenW = screen.width;
     var screenH = screen.width;
     var self = this;
-    var ratio = 35; // DEFAULT BUILD RATIO
 	var oldfont = parseInt(window.getComputedStyle(document.body, null).getPropertyValue('font-size'));
 	var screenSize;
 	var appWidth = document.body.clientWidth || document.body.scrollWidth || document.getElementById("shoutWrapper").clientWidth;
@@ -22,13 +24,13 @@ var windowSize = function()
     if(appWidth <= appHeight)
     {
     	screenSize = appWidth;
-    	ratio = 35;
+    	ratio = ratioPortrait;
     }
     else // Landscape
     {
         layout = "Landscape";
     	screenSize = appHeight;
-    	ratio = 50;
+    	ratio = ratioLandscape;
     }
 	var font = Math.round(screenSize / ratio);
     if(oldfont !== font && font !== 0)

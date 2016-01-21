@@ -1,15 +1,20 @@
 // bootstrap
-window.appName = "myApp"; // GLOBAL This should be the name of the folder that holds the app.
-var mainMod = "com."+appName+".app.App";
-var _appInstance = null;
-var system = null;
+var appName = "myApp"; // This should be the name of the folder that holds the app.
+define("appName", appName);
+
+var ratioLandscape = 40; // Set this to define how many units across the app is in landscape mode
+var ratioPortrait = 25; // Set this to define how many units across the app is in portrait mode
+
 ModRewrite.baseUrl = "modules";
 
-ModRewrite.addExtensionRule("json");
-ModRewrite.addExtensionRule("html");
-ModRewrite.addExtensionRule("css");
+ModRewrite.addExtensionRule("json"); // Allow josn file extensions
+ModRewrite.addExtensionRule("html"); // Allow html file extensions
+ModRewrite.addExtensionRule("css"); // Allow css file extensions
 
-ModRewrite.addFileRule(/com./, function(path)
+var _appInstance = null; // Object that holds the app
+var mainMod = "com."+appName+".app.App";
+
+ModRewrite.addFileRule(/com./, function(path) // rewrite paths containing "com." to allow java like module names  
 {
 	return path.split(".").join("/");
 });
@@ -48,15 +53,17 @@ ModRewrite.addFileRule("Lawnchair", function(path)
     return "libs/lawnchair-0.6.1";
 });
 
+
+// This handles setting and resizing the window.
 var koWindowSize = null;
 var koWindowSizeResult = null;
 require(["com.component.windowSize"], function(modules)
 {
 	var windowSize = modules["com.component.windowSize"];
-	koWindowSizeResult = windowSize();
+	koWindowSizeResult = windowSize(ratioLandscape, ratioPortrait);
 	window.onresize = function(val, val2)
 	{
-		koWindowSizeResult = windowSize();
+		koWindowSizeResult = windowSize(ratioLandscape, ratioPortrait);
         if(koWindowSize)
         {
             koWindowSize(koWindowSizeResult);
@@ -68,7 +75,8 @@ require(["com.component.windowSize"], function(modules)
     }
 });
 
-    
+// This parses the GET variables in the url and gives you access to them under the variable qsp.  
+// use : var qsp = requireLocal("qsp"); to get the variable.    
 var getQueryStringParams = function()
 {
     var match, urlParams,
@@ -93,9 +101,10 @@ var getQueryStringParams = function()
     }   
     return urlParams; 
 };
+var qsp = getQueryStringParams();
+define("qsp", qsp);
 
-window.qsp = getQueryStringParams();
-
+// Callback to start the app when dependencies are loaded
 var initModules = function(modules)
 {
 	var App = modules[mainMod];

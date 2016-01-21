@@ -1,7 +1,7 @@
 /*
 *	There are two ways that you can use the require method.
 *
-* 	1. You can give it an array of module names, and it will return a deferred object. The done Function can be passed in as a second arguement, or you can use the done function of the deferred object. Either will return an object that has the modules, with the module names as keys.  The third arguement of require regesters the fail function.
+* 	1. You can give it an array of module names, and it will return a deferred object. The done Function can be passed in as a second argument, or you can use the done function of the deferred object. Either will return an object that has the modules, with the module names as keys.  The third argument of require registers the fail function.
 *
 * 	2. If you pass a string in double quotes it will return a deferred object, which will be given the module when resolved.
 *
@@ -32,3 +32,5 @@ log.info("Here is stuff: {}", stuff);
 	
 // next line is to allow Browsers to find the file.
 //# sourceURL=/modules/bootstrap0.js
+
+

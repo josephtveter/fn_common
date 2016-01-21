@@ -97,12 +97,7 @@ var BaseController = function()
 
     this.getString = function(id)
     {
-        var stringId = id;
-        if(id.indexOf(".") === -1)
-        {
-            stringId = self.screenId+"."+id;
-        }
-        return this.dataModel.i18n.getString(stringId);
+        return id;
     };
 
     /**

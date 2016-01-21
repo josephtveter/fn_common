@@ -35,6 +35,7 @@ var screenLoaderFactory = function(params)
         loaderFn: function(navModel)
         {
             this.navModel = navModel;
+            var appName = requireLocal("appName");
             var self = this;
             var deferredResult = new Deferred();
             var controllerModule = "com."+appName+".ui.controller." + params.moduleName + "Controller"; // TODO SET IN bootstrap

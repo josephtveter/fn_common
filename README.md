@@ -3,7 +3,7 @@ FN_CommonJS
 FN_CommonJS is a dependency Management loader built to the Common JS Spec
 http://wiki.commonjs.org/wiki/CommonJS
 
-Inclueded in the FN_CommonJS library are 2 dependencies an Ajax library, and a Deferred Promise Library
+Included in the FN_CommonJS library are 2 dependencies an Ajax library, and a Deferred Promise Library
 
 The Ajax Library is patterned after Jquery
 http://api.jquery.com/jquery.ajax/
@@ -25,8 +25,8 @@ Here is an example:
 
 API
 		 
-require(moduleName String) // in doubble quotes
-	- Returns an object by the moduleName that is passed in.  When doubble quotes are used it will attempt to preload the file so it can return the file upon execution.  
+require(moduleName String) // in double quotes
+	- Returns an object by the moduleName that is passed in.  When double quotes are used it will attempt to preload the file so it can return the file upon execution.  
 
 		@method require
 		@param  String
@@ -47,7 +47,7 @@ require(moduleNamesArray Array, doneCallback function, failCallback function)
 
 	Example:
 
-		require(["myModule1", "myModule2"], function(modules) // First arguement is an array of module names, Second Arguement is the done function
+		require(["myModule1", "myModule2"], function(modules) // First argument is an array of module names, Second Arguement is the done function
 		{
 			var myModule1 = modules["myModule1"];
 			var myModule2 = modules["myModule2"];
@@ -72,7 +72,7 @@ define(moduleName String, data String Object or Array)
 
 
 requireLocal(moduleName String)
-	- returns module or null, use if you want exeplitcitly what is currently in memory
+	- returns module or null, use if you want explicitly what is currently in memory
 
 		@method requireLocal
 		@param  String
@@ -85,7 +85,7 @@ requireLocal(moduleName String)
 
 
 ModRewrite.baseUrl String
-	- if set, it will prefix any non fully qulified URL
+	- if set, it will prefix any non fully qualified URL
 
 	Example:
 
@@ -143,7 +143,7 @@ Deferred
 
 	Example:
 
-		var deferred = new Deferred; // instanciate the object
+		var deferred = new Deferred; // instantiate the object
 
 		var successFun = function(result) // Success Function
 		{
@@ -250,4 +250,5 @@ Code Examples
 - The commonJS example will show you the methods of the CommonJS Library
 - The deferred example will show how you can use the deferred objects
 - The ajax example will show you the methods of the Ajax library 
+
 

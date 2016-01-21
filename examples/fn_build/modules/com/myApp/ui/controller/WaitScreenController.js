@@ -22,8 +22,8 @@ var WaitScreenController = function(navModel)
 		}
 		else
 		{
-			var loading = self.getString("wait.loading");
-			self.message(loading());
+			var loading = self.getString("loading");
+			self.message(loading);
 		}
 		if(data && data.message2)
 		{
