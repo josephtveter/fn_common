@@ -1,4 +1,6 @@
-FN_CommonJS
+Fractured Nations Common JS
+
+- FN_CommonJS
 
 FN_CommonJS is a dependency Management loader built to the Common JS Spec
 http://wiki.commonjs.org/wiki/CommonJS
