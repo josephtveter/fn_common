@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="examples/fn_build/modules/com/myApp/app/|examples/commonJS/modules/com/component/|examples/commonJS/modules/libs/|examples/deferred/modules/libs/|examples/deferred/modules/|**/*.min.js|**/node_modules/*|**/bower_components/*|examples/fn_build/modules/com/myApp/model/|examples/fn_build/modules/com/myApp/ui/controller/|examples/ajax/modules/|examples/fn_build/modules/libs/|examples/fn_build/modules/com/myApp/app/objects/|examples/commonJS/modules/|examples/fn_build/modules/|examples/log/modules/|examples/log/modules/libs/|examples/fn_build/modules/com/component/|examples/ajax/modules/libs/" kind="src" path=""/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*|libs/" kind="src" path="examples/ajax/modules"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="examples/ajax/modules/libs"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*|com/component/|libs/" kind="src" path="examples/commonJS/modules"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="examples/commonJS/modules/com/component"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="examples/commonJS/modules/libs"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*|libs/" kind="src" path="examples/deferred/modules"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="examples/deferred/modules/libs"/>
+	<classpathentry excluding="com/myApp/app/objects/|com/myApp/ui/controller/|com/myApp/model/|**/*.min.js|**/node_modules/*|com/myApp/app/|**/bower_components/*|com/component/|libs/" kind="src" path="examples/fn_build/modules"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="examples/fn_build/modules/com/component"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*|objects/" kind="src" path="examples/fn_build/modules/com/myApp/app"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="examples/fn_build/modules/com/myApp/app/objects"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="examples/fn_build/modules/com/myApp/model"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="examples/fn_build/modules/com/myApp/ui/controller"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="examples/fn_build/modules/libs"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*|libs/" kind="src" path="examples/log/modules"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="examples/log/modules/libs"/>
+	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
