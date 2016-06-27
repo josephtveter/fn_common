@@ -1,8 +1,15 @@
 var TestScreenController = function(navModel)
 {
+	var ko = require("ko");
 	log.info("TestScreenController");
 	var self = this;
 	this.init(navModel);
+	this.changeMe = ko.observable(true);
+
+	window.setTimeout(function()
+	{
+         self.changeMe(false);
+	}, 2000);
 
 	this.gotoPage2 = function()
 	{

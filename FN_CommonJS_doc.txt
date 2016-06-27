@@ -1,0 +1,113 @@
+FN_CommonJS
+
+Core
+
+
+Method docReady(callback function)
+
+* Triggered when the document has been fully processed.
+* Checks and listens for document.readyState, Event DOMContentLoaded, Event load, Event onreadystatechange, Event onload for maximum cross platform compadibility.
+
+
+Object log
+* Custom Logging
+
+	Variable logLevel
+	* variable to set the maximum log level
+
+	Variable logOnly
+	* variable to override logLevel to show only one type of log.
+
+	* Log codes for logLevel and logOnly
+	*
+	* trace log = 50
+	* log log   = 40
+	* info log  = 30
+	* warn log  = 20
+	* error log = 10
+	* no log    = 0
+
+	Method log.trace(message String, obj Object)
+	Method log.log(message String, obj Object)
+	Method log.info(message String, obj Object)
+	Method log.warn(message String, obj Object)
+	Method log.error(message String, obj Object)
+
+	* message is the message to be outputted to the log method.
+	* if the message containes '{}', the obj argument will be converted to a string and placed where '{}' appears in the string.
+
+Method Deferred(null)
+* returns a promise object
+	
+	Promise Object
+
+		Array onDone
+			array of Methods that will be called when the Promise has been resolved.
+
+		Array onAlways 
+			array of Methods that will be called when the Promise has been resolved or rejected.
+
+		Array onFail 
+			array of Methods that will be called when the Promise has been rejected.
+
+		Integer state
+			Numberic value for the status of the promise
+			possible values are 
+				PENDING : 0
+				FAILURE : 1
+				SUCCESS : 2
+
+		Method status (null) 
+			String value for the state of the promise
+			possible values are 
+				"pending"
+				"rejected"
+				"resolved"
+
+		Method promise (null) 
+			Method to return the promise to allow for easy jquery replacement
+			Returns the Promise Object
+
+		Method always (callback Function)
+			Method to regester a callback on the onAlways array
+			Returns the Promise Object
+
+		Method done (callback Function)
+			Method to regester a callback on the onDone array
+			Returns the Promise Object
+
+		Method fail (callback Function)
+			Method to regester a callback on the onFail array
+			Returns the Promise Object
+
+		Method then ( onFulfilled Function, onRejected Function)
+			Method to regester a callback on the onDone array, and a callback on the onFail array
+			Returns the Promise Object
+
+		Method isRejected (null)
+			Method to check if the Promise has been rejected
+			Returns Boolean
+
+		Method isResolved (null)
+			Method to check if the Promise has been resolved
+			Returns Boolean
+
+		Method reject ( arg Mixed )
+			Method to trigger arg to be passed to the regestered callbacks on the onFail and onAlways arrays
+			Returns the Promise Object
+
+		Method resolve ( arg Mixed )
+			Method to trigger arg to be passed to the regestered callbacks on the onDone and onAlways arrays
+			Returns the Promise Object
+
+Method Ajax (params Object)
+* Method to make server side requests
+
+	
+
+		
+
+
+
+		
+

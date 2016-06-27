@@ -190,6 +190,7 @@ var FN_Log = function(logLevel)
 
 	window.onerror = function(message, file, line, relLine, errorObj)
 	{
+		file = file || "";
 		var error = {message: message, file: file, line: line, relLine: relLine};
 		self.warn("FN_Log onerror: {}", error);
 	};
@@ -276,7 +277,7 @@ if ( typeof exports !== "undefined" ) {
     module.exports = FN_Log;
 }
 else if ( typeof define === "function" ) {
-    define( function () {
+    define("FN_Log", function () {
         return FN_Log;
     } );
 }
@@ -651,18 +652,79 @@ var log = new FN_Log(40);
 	/* End Deferred */
 
 
+/*
+Multipart notes
+
+try {
+  if (typeof XMLHttpRequest.prototype.sendAsBinary == 'undefined') {
+    XMLHttpRequest.prototype.sendAsBinary = function(text){
+      var data = new ArrayBuffer(text.length);
+      var ui8a = new Uint8Array(data, 0);
+      for (var i = 0; i < text.length; i++) ui8a[i] = (text.charCodeAt(i) & 0xff);
+      this.send(ui8a);
+    }
+  }
+} catch (e) {}
+
+
+
+var xhr  = new XMLHttpRequest();
+...
+xhr.open("POST", url, true);
+
+var boundary = '------multipartformboundary' + (new Date).getTime(),
+dashdash = '--',
+crlf = '\r\n',
+
+
+content = dashdash+boundary+crlf+'Content-Disposition: form-data; name="NAMEOFVARIABLEINPHP";"'+crlf+crlf+VARIABLEWITHBASE64IMAGE+crlf+dashdash+boundary+dashdash+crlf;
+
+
+xhr.setRequestHeader("Content-type", "multipart/form-data; boundary="+boundary);
+xhr.setRequestHeader("Content-length", content.length);
+xhr.setRequestHeader("Connection", "close");
+// execute
+xhr.send(content);
+
+
+*/
+
+	try {
+	  	if (typeof XMLHttpRequest.prototype.sendAsBinary == 'undefined') {
+	    	XMLHttpRequest.prototype.sendAsBinary = function(text){
+	      		var data = new ArrayBuffer(text.length);
+	      		var ui8a = new Uint8Array(data, 0);
+	      		for (var i = 0; i < text.length; i++) ui8a[i] = (text.charCodeAt(i) & 0xff);
+	      		this.send(ui8a);
+	    	}
+	  	}
+	} catch (e)
+	{
+		log.warn("Ajax sendAsBinary not set");
+	}
+
+
 	/* Start Ajax */
 	function ajax (params, retry) {
 		return new Ajax(params, retry);
 	}
 
-	var DEFAULT_TIMEOUT = 10000;
+	var DEFAULT_TIMEOUT = 20000;
 	var DEFAULT_METHOD = "GET";
 	var DEFAULT_RETRY = 5;
 	var DEFAULT_CONTENT_TYPE = 'application/x-www-form-urlencoded; charset=UTF-8';
 	var DEFAULT_DATA_TYPE = "json"; // dataType (default: Intelligent Guess (xml, json, script, or html))
 	var Ajax = function(params, retry)
 	{
+		if(retry)
+		{
+			log.log("Ajax retry {}", retry);
+		}
+		var boundary = '------multipartformboundary' + (new Date).getTime();
+		var dashdash = '--';
+		var crlf = '\r\n';
+		var multipart = params.contentType && params.contentType.indexOf("multipart") !== -1 ? true : false;
+		var content = null;
 		params = params || {};
 		retry = retry || 0;
 		var self = this;
@@ -672,7 +734,7 @@ var log = new FN_Log(40);
 		this.onFail = [];
 		this.requestType = params.requestType;
 		this.url = params.url;
-		this.retry = params.maxRetry || DEFAULT_RETRY;
+		this.retry = params.maxRetry || this.url.indexOf("http") === -1 ? 1 : DEFAULT_RETRY;
 		this.xhr = new XMLHttpRequest();
 		var dataType = params.dataType || DEFAULT_DATA_TYPE;
 		var method = params.method === "GET" || params.method === "POST" ? params.method : DEFAULT_METHOD;
@@ -719,8 +781,44 @@ var log = new FN_Log(40);
 			}
 
 		}
+
+		// navigator.userAgent	"Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; HPDTDF; BRI/1; .NET4.0E; .NET4.0C; GWX:QUALIFIED; rv:11.0) like Gecko"
+		// || navigator.userAgent.indexOf("Windows Phone") !== -1
+		var ua = navigator.userAgent.toString();
+		var isTrident = ua.indexOf("Trident") !== -1 ? true : false;
+		if(isTrident === false)
+		{
+			this.xhr.timeout = params.timeout ? params.timeout : DEFAULT_TIMEOUT; // Set timeout to 4 seconds (4000 milliseconds)
+		}
+		
+
 		this.xhr.open(method, this.url, async);
-		this.contentType = params.contentType || DEFAULT_CONTENT_TYPE;
+		this.contentType = params.contentType ? params.contentType : DEFAULT_CONTENT_TYPE;
+		
+		if(multipart)
+		{
+			// content = params.data.data;
+			this.contentType += "; boundary="+boundary;
+/*
+
+> Expect: 100-continue
+> 
+< HTTP/1.1 100 Continue
+< HTTP/1.1 200 OK
+< Server: nginx/1.6.2
+< Date: Tue, 01 Mar 2016 00:29:55 GMT
+< Content-Type: image/jpeg
+< Transfer-Encoding: chunked
+< Connection: keep-alive
+< Keep-Alive: timeout=270
+< Access-Control-Allow-Origin: http://lt1-static.shoutgameplay.com
+< Access-Control-Allow-Credentials: true
+
+*/
+
+
+
+		}
 		if(!params.headers || ( params.headers && !params.headers["Content-Type"] ) )
 		{
 			this.xhr.setRequestHeader("Content-Type", this.contentType);
@@ -825,6 +923,7 @@ var log = new FN_Log(40);
 				{
 					self.onAlways[i](response, headers, self.requestType, self.xhr);
 				}
+				self.xhr = null;
 			};
 			delay(fireFun());
 		};
@@ -901,7 +1000,6 @@ var log = new FN_Log(40);
 	    	}
 	  	};
 
-	  	this.xhr.timeout = params.timeout || DEFAULT_TIMEOUT; // Set timeout to 4 seconds (4000 milliseconds)
 		this.xhr.ontimeout = function(e)
 		{ 
 			if(retry <= self.retry)
@@ -932,9 +1030,10 @@ var log = new FN_Log(40);
 			self.resolveFailFile(e, {errorType: "xhrAbort"});
 		};
 
-		// this.xhr.onloadend = function(e, a, b, c)
-		// {
+		// this.xhr.onload = function(e) {
 		// 	debugger;
+		//     var text = e.target.responseText;
+		//     debugger;
 		// };
 
 		this.xhr.onerror = function(e)
@@ -942,7 +1041,110 @@ var log = new FN_Log(40);
 			self.resolveFailFile(e, {errorType: "xhrError", status: self.xhr.status, requestType: self.requestType, requestParams: params});
 		};
 
-	  	if(method === "GET")
+		if(multipart)
+		{
+			var filetype = null;
+			var fileObject = params.data.file;
+			if ( fileObject.type == '' ){
+		        filetype = 'application/octet-stream';
+		    } else {
+		        filetype = fileObject.type;
+		    }
+		    //this used to work
+			// content = dashdash + boundary + crlf 
+			// + "Content-Transfer-Encoding: BASE64;"
+			// + "Content-Disposition: form-data;" + "name=\"file\";" 
+			// + "filename=\"" + unescape(encodeURIComponent(params.data.filename)) 
+			// + "\"" + crlf + "Content-Type: " + filetype 
+			// + crlf + crlf + params.data.result 
+			// + crlf + dashdash + boundary + dashdash;
+
+			/* iframe way
+
+
+
+			var f = document.createElement("form");
+			f.setAttribute('method',"post");
+			f.setAttribute('action',"submit.php");
+
+			var i = document.createElement("input"); //input element, text
+			i.setAttribute('type',"text");
+			i.setAttribute('name',"username");
+
+			var s = document.createElement("input"); //input element, Submit button
+			s.setAttribute('type',"submit");
+			s.setAttribute('value',"Submit");
+
+			f.appendChild(i);
+			f.appendChild(s);
+
+			//and some more input elements here
+			//and dont forget to add a submit button
+
+			document.getElementsByTagName('body')[0].appendChild(f);
+
+			*/
+
+			
+			// Content-Transfer-Encoding := "BASE64"
+
+			// content = dashdash+boundary+crlf+'Content-Disposition: form-data; name="";"'+crlf+crlf+params.data.file+crlf+dashdash+boundary+dashdash+crlf;
+
+			// var iframe = document.createElement("iframe");
+			// iframe.src="about:blank";
+			// iframe.addEventListener('load', function (e) {
+				debugger;
+				var file = params.data.file;
+			    // var myElement= document.createElement("label");
+			    // myElement.innerHTML="blabla";
+			    // miiframe.contentDocument.body.appendChild(myElement);
+			    // var form = iframe.contentDocument.getElementById("submitFile");
+			    // if(!form)
+			    // {
+			  //   	var f = document.createElement("form");
+					// // f.setAttribute('method',"post");
+					
+					// // f.setAttribute('id',"submitFile");
+
+					// // f.setAttribute('action',params.data.fileUrl);
+
+					// var i = document.createElement("input"); 
+					// i.setAttribute('type',"file");
+					// i.setAttribute('name',"file");
+					// i.value = params.value.;
+					// // i.setAttribute('value', file);
+					// f.appendChild(i);
+					// // document.body.appendChild(f);
+					// // f.submit();
+			  //   // }
+			  //   // else
+			    // {
+			    // 	form.submit();
+			    // }
+					
+				
+
+			// }, false);
+
+			// document.body.appendChild(iframe);
+
+			
+				
+			var formData = new FormData(params.data.form);
+			// formData.append("file", file);
+			// var iframe = document.createElement('iframe');
+			// document.body.appendChild(formData);
+			// debugger;
+			
+
+
+			// this.xhr.sendAsBinary(formData);
+			this.xhr.send(formData);
+			// this.xhr.sendAsBinary(content);
+			// f.style.display="none";
+			// this.xhr.send(formData);
+		}
+	  	else if(method === "GET")
 	  	{
 	  		this.xhr.send(null);
 	  	}
@@ -1064,10 +1266,11 @@ var log = new FN_Log(40);
     	// use GET ? 
     	return path;
     };
-
+	ModRewrite.noExports = {};
     ModRewrite.fileRules = [];
     ModRewrite.extensions = [];
     ModRewrite.exports = {};
+    ModRewrite.deps = {};
     ModRewrite.addExtensionRule = function(ext)
     {
     	ModRewrite.extensions.push(ext);
@@ -1079,6 +1282,15 @@ var log = new FN_Log(40);
     ModRewrite.setExports = function(id, exportName)
     {
     	ModRewrite.exports[id] = exportName;
+    };
+    ModRewrite.setDependency = function(id, dep)
+    {
+    	// ModRewrite.deps[id] = dep;
+    	if(!ModRewrite.deps[id])
+    	{
+    		ModRewrite.deps[id] = [];
+    	}
+    	ModRewrite.deps[id].push(dep);
     };
 
     ModRewrite.baseUrl = "";
@@ -1103,7 +1315,7 @@ var log = new FN_Log(40);
 // Url parse
 //
 ( function ( global ) {
-	"use strict"; 
+	// "use strict"; 
 	var __modules__ = {};
 	var __loading__ = {};
 
@@ -1113,166 +1325,179 @@ var log = new FN_Log(40);
 		local = local || false;
 		callback = typeof callback === "function" ? callback : null;
 		errorCallBack = typeof errorCallBack === "function" ? errorCallBack : null;
+
+		var processMod = function(deferredMod, moduleId, result, module)
+		{
+			if(!ModRewrite.noExports[moduleId])
+			{
+				var exports = {};
+			}
+			else
+			{
+				// debugger;
+			}
+
+			if(moduleId.indexOf("!") !== -1 && typeof result === "string")
+			{
+				if(moduleId.indexOf("json!") !== -1 || moduleId.indexOf("!json") !== -1)
+				{
+					try 
+					{
+						module.exports = JSON.parse(result);
+					}
+					catch(e)
+					{
+						console.warn(e.message);
+						log.handleCatch(e, "require createModule getExports processMod catch 1: "+moduleId);
+						
+					}
+				}
+				else
+				{
+					module.exports = result;
+				}
+			}
+			else if(result.indexOf("module.exports") !== -1)
+			{
+				try 
+				{
+					var evalFn = eval(result);
+				}
+				catch(e)
+				{
+					module.exports = result;
+					log.handleCatch(e, "require createModule getExports processMod catch 2: "+moduleId);
+				}
+			}
+			else if(ModRewrite.exports[moduleId])// wrapIt
+			{
+				try 
+				{
+					var evalFn = eval(result);
+					if(window[ModRewrite.exports[moduleId]])
+					{
+						module.exports = window[ModRewrite.exports[moduleId]];
+					}
+					else if(this[ModRewrite.exports[moduleId]])
+					{
+						module.exports = this[ModRewrite.exports[moduleId]];
+					}
+					else
+					{
+						module.exports = result;
+					}
+				}
+				catch(e)
+				{
+					log.handleCatch(e, "require createModule getExports processMod catch 3: "+moduleId);
+					module.exports = result;
+				}
+			}
+			else
+			{
+				try 
+				{
+					eval(result); // Run the script
+				}
+				catch(e) 
+				{
+					log.handleCatch(e, "require createModule getExports processMod catch 4: "+moduleId);
+				}
+				module.exports = result;
+				
+			}
+			module.loaded = true;
+			__modules__[moduleId] = module;
+			deferredMod.resolve(module.exports);
+			if(callback && typeof callback === "function")
+			{
+				callback(module.exports);
+			}
+		};
+
+		var getExports = function(result, deferredMod, module, moduleId)
+		{
+			if(ModRewrite.deps[moduleId])
+			{
+				var str = '';
+				var len = ModRewrite.deps[moduleId].length;
+				for(var i=0;i<len;i++)
+				{
+					str += 'var '+ModRewrite.deps[moduleId][i]+' = require("'+ModRewrite.deps[moduleId][i]+'");';
+				}
+				result = str+result;
+			}
+			
+			// If js
+			if(ModRewrite.noExports[moduleId])
+			{
+				processMod(deferredMod, moduleId, result, module);
+			}
+			else if(result.indexOf("require") !== -1)
+			{
+				var regexp = /require\(/g;
+				var match, matches = [];
+
+				while ((match = regexp.exec(result)) !== null) {
+				  matches.push(match.index);
+				}
+				var dependencies = [];
+				var matchLen = matches.length;
+				for(var m=0;m<matchLen;m++)
+				{
+					var end = result.substr(matches[m]).indexOf(")");
+					var lib = result.substr(matches[m]+8, end-8);
+					if(lib.indexOf("\"") === 0 && lib.substr(lib.length -1) === '"')
+					{
+						lib = lib.split("\"").join("");
+						var load = require(lib);
+						if(load instanceof Deferred)
+						{
+							dependencies.push(load);
+						}
+					} // Else wait till we are using that module.
+					
+				}
+				if(dependencies && dependencies.length > 0)
+				{
+					// when
+					Deferred.when(dependencies, function()
+					{
+						processMod(deferredMod, moduleId, result, module);
+					}, function()
+					{
+						debugger;
+					});
+				}
+				else
+				{
+					processMod(deferredMod, moduleId, result, module);
+				}
+			}
+			else
+			{
+				processMod(deferredMod, moduleId, result, module);
+			}
+
+		};
+
 		var createModule = function(moduleId)
 		{
-			// log.log("require createModule: {}", moduleId);
 			var deferredMod = new Deferred();
 			__loading__[moduleId] = deferredMod;
 			var module = {
 			  	exports: {}
 			};
-			var exports = {};
+			
 			module.moduleId = moduleId;
 			var path = ModRewrite(moduleId);
 			module.path = path;
 			module.loaded = false;
-			var getExports = function(result)
-			{
-				var processMod = function()
-				{
-					if(moduleId.indexOf("!") !== -1 && typeof result === "string")
-					{
-						if(moduleId.indexOf("json!") !== -1 || moduleId.indexOf("!json") !== -1)
-						{
-							try 
-							{
-								module.exports = JSON.parse(result);
-							}
-							catch(e)
-							{
-								console.warn(e.message);
-								log.handleCatch(e, "require createModule getExports processMod: "+moduleId);
-								
-							}
-						}
-						else
-						{
-							module.exports = result;
-						}
-					}
-					else if(result.indexOf("module.exports") !== -1)
-					{
-						try 
-						{
-							var evalFn = eval(result);
-						}
-						catch(e)
-						{
-							module.exports = result;
-							log.handleCatch(e, "require createModule getExports processMod: "+moduleId);
-						}
-					}
-					else if(ModRewrite.exports[moduleId])// wrapIt
-					{
-						try 
-						{
-							var evalFn = eval(result);
-							if(window[ModRewrite.exports[moduleId]])
-							{
-								module.exports = window[ModRewrite.exports[moduleId]];
-							}
-							else if(this[ModRewrite.exports[moduleId]])
-							{
-								module.exports = this[ModRewrite.exports[moduleId]];
-							}
-							else
-							{
-								module.exports = result;
-							}
-						}
-						catch(e)
-						{
-							log.handleCatch(e, "require createModule getExports processMod: "+moduleId);
-							module.exports = result;
-						}
-					}
-					else
-					{
-						try 
-						{
-							eval(result); // Run the script
-						}
-						catch(e) 
-						{
-							log.handleCatch(e, "require createModule getExports processMod: "+moduleId);
-						}
-						module.exports = result;
-						
-					}
-					module.loaded = true;
-					__modules__[moduleId] = module;
-					deferredMod.resolve(module.exports);
-					if(callback && typeof callback === "function")
-					{
-						callback(module.exports);
-					}
-				};
-				// If js
-				if(result.indexOf("require") !== -1)
-				{
-					var regexp = /require\(/g;
-					var match, matches = [];
-
-					while ((match = regexp.exec(result)) !== null) {
-					  matches.push(match.index);
-					}
-					var dependencies = [];
-					var matchLen = matches.length;
-					for(var m=0;m<matchLen;m++)
-					{
-						var end = result.substr(matches[m]).indexOf(")");
-						var lib = result.substr(matches[m]+8, end-8);
-						if(lib.indexOf("\"") === 0 && lib.substr(lib.length -1) === '"')
-						{
-							lib = lib.split("\"").join("");
-							var load = require(lib);
-							if(load instanceof Deferred)
-							{
-								dependencies.push(load);
-							}
-						} // Else wait till we are using that module.
-						
-					}
-					if(dependencies && dependencies.length > 0)
-					{
-						// when
-						Deferred.when(dependencies, function()
-						{
-							processMod();
-						});
-					}
-					else
-					{
-						processMod();
-					}
-				}
-				else
-				{
-					processMod();
-				}
-
-			};
-			// debugger;
-			// if(window.__compressed__)
-			// {
-			// 	for(var item in window.__compressed__)
-			// 	{
-			// 		debugger;
-			// 		if(path.indexOf("http"))
-			// 		{
-
-			// 		}
-			// 		else
-			// 		{
-
-			// 		}
-					
-			// 	}
-			// }
+			
 			// TODO change content Type by extension
 			ajax({url: path, method:"GET", contentType: "text/plain", dataType: "text"}).done(function(result)
 			{
-				getExports(result);
+				getExports(result, deferredMod, module, moduleId);
 			}).fail(function(errorObj){
 				log.warn("require ajax FAILED to load Path: "+path+" - {}",errorObj);
 				deferredMod.reject(errorObj);
@@ -1286,6 +1511,12 @@ var log = new FN_Log(40);
 			if(__modules__[moduleIds] && __modules__[moduleIds].exports)
 			{
 				deferred = __modules__[moduleIds].exports;
+				if(callback && typeof callback === "function")
+				{
+					var rtn = {};
+					rtn[moduleIds] = deferred
+					callback(rtn);
+				}
 			}
 			else if(local)
 			{
@@ -1329,30 +1560,38 @@ var log = new FN_Log(40);
 					defArr.push(load);
 				}
 			}
-			Deferred.when(defArr, function(obj)
+			var defDone = function()
 			{
-				delay(function()
+				var resolveArr = {};
+				for(var d=0;d<len;d++)
 				{
-					var resolveArr = {};
-					for(var d=0;d<len;d++)
+					var mod = require(moduleIds[d]);
+					if(!(mod instanceof Deferred) )
 					{
-						var mod = require(moduleIds[d]);
-						if(!(mod instanceof Deferred) )
-						{
-							resolveArr[moduleIds[d]] = mod;
-						}
-						else
-						{
-							log.warn("FN_CommonJS - Error loading Module: "+moduleIds[d]);
-						}
+						resolveArr[moduleIds[d]] = mod;
 					}
-					deferred.resolve(resolveArr);
-					if(callback && typeof callback === "function")
+					else
 					{
-						callback(resolveArr);
+						log.warn("FN_CommonJS - Error loading Module: "+moduleIds[d]);
 					}
-				});
-			});
+				}
+				deferred.resolve(resolveArr);
+				if(callback && typeof callback === "function")
+				{
+					callback(resolveArr);
+				}
+			};
+			if(defArr.length > 0)
+			{
+				Deferred.when(defArr, function(obj)
+				{
+					delay(defDone);
+				}, deferred.reject);
+			}
+			else
+			{
+				defDone();
+			}
 		}
 		else
 		{
@@ -1360,9 +1599,36 @@ var log = new FN_Log(40);
 		}
 		return deferred; // Not always a deferred
 	};
-	var define = function(id, script)
+	var define = function(id, script, name)
 	{
-		__modules__[id] = {exports: script};
+		var mod = null;
+		if(script && typeof id === "string")
+		{
+			__modules__[id] = {exports: script};
+		}
+		else if(name && script && typeof script === "function")
+		{
+			mod = {};
+			script(mod, false);
+			__modules__[name] = {exports: mod};
+		}
+		else if(id && typeof id === "function")
+		{
+			mod = id();
+			if(mod.name && typeof mod.name === "string")
+			{
+				__modules__[mod.name.toLowerCase()] = {exports: mod};
+			}
+			else
+			{
+				debugger;
+			}
+		}
+		else
+		{
+			debugger;
+		}
+		
 	};
 
 	var requireLocal = function(id)
